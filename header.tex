@@ -1,0 +1,47 @@
+% define commands for two-column slides
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
+% Use en-dash instead of square for bullets
+\setbeamertemplate{itemize item}{--}
+\setbeamertemplate{itemize subitem}{--}
+
+% Set lists flush left
+\settowidth{\leftmargini}{\usebeamertemplate{itemize item}}
+\addtolength{\leftmargini}{\labelsep}
+
+% Configure figure label
+\usepackage{caption}
+\DeclareCaptionLabelFormat{fig}{#1#2}
+\captionsetup[figure]{labelformat=fig,labelfont=bf,labelsep=period,name=Fig\ }
+
+%% Customize title page
+\renewcommand\titlepage{%
+    \begin{minipage}[b][\paperheight]{\textwidth}
+    \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
+    \vfill%
+    \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
+    \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
+    \usebeamertemplate*{title separator}
+%    \end{macrocode}
+%
+% Beamer's definition of |\insertauthor| is always nonempty, so we have
+% to test another macro initialized by |\author{...}| to see if the user has
+% defined an author. This solution was suggested by Enrico Gregorio in an
+% answer to \href{https://tex.stackexchange.com/questions/241306/}{this
+% Stack Exchange question}.
+%
+%    \begin{macrocode}
+    \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
+    \ifx\insertdate\@empty\else\usebeamertemplate*{date}\fi
+    \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
+    \small{
+    \href{mailto:pedmiston@wisc.edu}{pedmiston@wisc.edu} \\
+    \footnotesize{University of Wisconsin--Madison} \\
+    }
+    \vfill
+    \vspace*{1mm}
+  \end{minipage}
+}

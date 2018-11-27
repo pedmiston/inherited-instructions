@@ -1,0 +1,17 @@
+---
+title: Inherited instructions
+author: Pierce Edmiston
+bibliography: references.bib
+csl: apa.csl
+output:
+  beamer_presentation:
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+# Totems
+
+# Gems
+
+# Rockets
