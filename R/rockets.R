@@ -17,13 +17,33 @@ recode_generation <- function(frame) {
 Rockets <- Rockets %>%
   recode_generation()
 
-ValidSubjects <- count(Rockets, workerId) %>%
+MedianRTs <- Rockets %>%
+  group_by(workerId) %>%
+  summarize(
+    median_rt = median(rt, na.rm = TRUE)
+  )
+
+rt_plot <- ggplot(MedianRTs) +
+  aes(fct_reorder(workerId, median_rt), median_rt) +
+  geom_point() +
+  scale_x_discrete(labels = NULL) +
+  geom_hline(yintercept = 500)
+
+workers_who_didnt_respond_too_fast <- MedianRTs %>%
+  filter(median_rt > 500) %>%
+  .$workerId
+
+workers_who_completed_all_trials <- count(Rockets, workerId) %>%
   mutate(is_valid = as.numeric(n == 128)) %>%
-  select(workerId, is_valid)
+  filter(is_valid == 1) %>%
+  .$workerId
 
-Rockets <- left_join(Rockets, ValidSubjects)
+Rockets <- Rockets %>%
+  filter(workerId %in% workers_who_completed_all_trials,
+         workerId %in% workers_who_didnt_respond_too_fast)
 
-accuracy_plot <- ggplot(filter(Rockets, is_valid == 1)) +
+accuracy_plot <- ggplot(Rockets) +
   aes(block_ix, is_correct, color = generation_f) +
   geom_line(aes(group = workerId), stat = "summary", fun.y = "mean") +
-  geom_smooth(aes(group = generation_f), method = "lm", se = FALSE)
+  geom_smooth(aes(group = generation_f), method = "lm", se = FALSE) +
+  geom_vline(xintercept=7, linetype = 2)

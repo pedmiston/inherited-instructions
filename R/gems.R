@@ -21,8 +21,14 @@ TestLandscapeCurrentScores <- SimpleHill %>%
 TestLandscapeGemScores <- SimpleHill %>%
   transmute(gem_x = x, gem_y = y, gem_score = score)
 
+valid_subjs <- Gems %>%
+  count(subj_id) %>%
+  mutate(is_valid = n == 160) %>%
+  filter(is_valid == 1) %>%
+  .$subj_id
+
 Gems <- Gems %>%
-  filter(version %in% c(1.3, 1.4), landscape_name == "SimpleHill") %>%
+  filter(version == 1.3, subj_id %in% valid_subjs) %>%
   mutate_distance_2d() %>%
   left_join(TestLandscapeCurrentScores) %>%
   melt_trial_stims() %>%
@@ -85,7 +91,9 @@ Gen2 <- InheritanceMap %>%
   select(-instructions_score, -instructions_label)
 
 InheritanceMap <- left_join(Gen1, Gen2) %>%
-  recode_instructions_score()
+  recode_instructions_score() %>%
+  drop_na() %>%
+  filter(inherit_from %in% valid_subjs, subj_id %in% valid_subjs)
 
 Gen2Block1 <- Gems %>%
   filter(generation == 2, block_ix == 1) %>%
@@ -98,10 +106,12 @@ Gen2Block2 <- Gems %>%
   drop_na(instructions_score)
 
 Gen1Block1 <- Gems %>%
-  filter(generation == 1, block_ix == 1)
+  filter(generation == 1, block_ix == 1) %>%
+  filter(subj_id %in% InheritanceMap$inherit_from)
 
 Gen1Block2 <- Gems %>%
-  filter(generation == 1, block_ix == 2)
+  filter(generation == 1, block_ix == 2) %>%
+  filter(subj_id %in% InheritanceMap$subj_id)
 
 subj_map <- select(Gems, subj_id, version, generation) %>% unique() %>% drop_na()
 inheritance_map <- select(Gems, subj_id, version, generation, inherit_from) %>% unique() %>% drop_na()
@@ -252,3 +262,62 @@ overall_diff_plot <- ggplot(Block1Diff) +
   scale_y_continuous("score diff (gen2-gen1)") +
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# instructions ---
+InstructionsScored <- Instructions %>%
+  left_join(InstructionsSummarized)
+
+# filter(InstructionsScored, instructions_score == 0)$instructions
+
+InstructionsBarWidth <- InstructionsCoded %>%
+  filter(dimension == "Bar width") %>%
+  rename(inherit_from = subj_id, instructions_score = score) %>%
+  ungroup()
+
+InstructionsOrientation <- InstructionsCoded %>%
+  filter(dimension == "Orientation") %>%
+  rename(inherit_from = subj_id, instructions_score = score) %>%
+  ungroup()
+
+valid_subjs <- Gems %>%
+  count(subj_id) %>%
+  mutate(is_valid = n == 160) %>%
+  filter(is_valid == 1) %>%
+  .$subj_id
+
+GemsGen2 <- Gems %>%
+  filter(version == 1.3, generation == 2, subj_id %in% valid_subjs)
+
+generation_map <- unique(GemsGen2[,c("subj_id", "inherit_from")])
+
+canalization_bar_width_plot <- GemsGen2 %>%
+  left_join(InstructionsBarWidth) %>%
+  group_by(instructions_score, trial) %>%
+  summarize(current_x = mean(current_x),
+            current_y = mean(current_y),
+            selected_x = mean(selected_x),
+            selected_y = mean(selected_y)) %>%
+  ungroup() %>%
+  ggplot() +
+  aes(x = current_x, y = current_y, xend = selected_x, yend = selected_y) +
+  geom_segment(aes(color = factor(instructions_score))) +
+  scale_color_discrete("", labels = c("Didn't mention", "Incomplete or inaccurate", "Correct")) +
+  labs(x = "orientation", y = "bar width") +
+  theme(legend.position = "top")
+
+canalization_orientation_plot <- GemsGen2 %>%
+  left_join(InstructionsOrientation) %>%
+  group_by(instructions_score, trial) %>%
+  summarize(current_x = mean(current_x),
+            current_y = mean(current_y),
+            selected_x = mean(selected_x),
+            selected_y = mean(selected_y)) %>%
+  ungroup() %>%
+  ggplot() +
+  aes(x = current_x, y = current_y, xend = selected_x, yend = selected_y) +
+  geom_segment(aes(color = factor(instructions_score))) +
+  scale_color_discrete("", labels = c("Didn't mention", "Incomplete or inaccurate", "Correct")) +
+  labs(x = "orientation", y = "bar width") +
+  theme(legend.position = "top")
+

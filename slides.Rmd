@@ -129,6 +129,44 @@ grid.arrange(
 )
 ```
 
+# Gems: Instructions - Nothing Useful
+
+> I believe that the more precious gems are on the left side. I believe the left most gem has a slight variablity. It ranges from plus 3 to negative 3, and The ones closer to the middle have greater ranges. The ones on the furthest to the left have the greatest ranges.
+
+\vspace{1em}
+
+> Stick with the same few gems and keep clicking them I think it is better to do that then go completely random.
+
+# Gems: Instructions - 2D correct
+
+> The gems went up in value when the lines became more horizontal.  Also, the amount of lines matters. More lines is good, but don't let the lines get too small where the top and bottom of the gem are no longer black otherwise the gems go down in value. Also, more defined lines on the gems usually make them more valuable.
+
+\vspace{1em}
+
+> I think the gems tilted at 10 degrees are most valuable. I also think that the gems with the biggest lines out of the 5 on the screen are the least valuable. Do not click the same gem more than 3 times in a row.
+
+# Gems: Instructions - 1D correct
+
+\scriptsize
+
+> It took me a while to find a pattern, but what I found is that a gem becomes more valuable when it is rotated clockwise. To clairfy, when the bars more and more to the right. Howeve, I found that when it got to the center, it went the other way, so counterclockwise.
+
+\vspace{1em}
+
+> The valued gems have thin stipes on them, but once the stripes are too thin the value decreases. The direction of stripes does not matter.
+
+# Gems: Instructions - Mention 2D
+
+> The gems that are most valuable are the ones with the most stripes and are slanted the most. Pay attention to the tops of the gems.
+
+# Gems: Instructions - ?
+
+> the lines form about 45 degree with the horizontal line. Should not be too dense. Black and white lines should be about the same width. 
+
+\vspace{1em}
+
+> I believe that the gems alternate from left to right and you have to select a certain gem based on the thickness of the lines located within it. I feel like if you had a thick one it would be the thinner one and than if you had a thin on it would become a thicker one.
+
 # Gems: Instructions outcomes
 
 ```{r gems-instructions-outcomes}
@@ -158,12 +196,22 @@ diff_plot
 overall_diff_plot
 ```
 
+# Gems: Canalization
+
+```{r gems-canalization}
+grid.arrange(
+  canalization_bar_width_plot + ggtitle("Bar width") + theme(legend.position = c(0.8, 0.2)),
+  canalization_orientation_plot + ggtitle("Orientation") + theme(legend.position = "none"),
+  nrow = 1
+)
+```
+
 # Rockets
 
 ```{r rockets, include=FALSE}
 ```
 
-```{r rockets-categories}
+```{r rockets-categories, out.height="80%"}
 draw_image("rocket-categories", package = "rockets")
 ```
 
@@ -171,4 +219,48 @@ draw_image("rocket-categories", package = "rockets")
 
 ```{r rockets-performance}
 accuracy_plot
+```
+
+# Rockets: Descriptions
+
+> A rockets have longer wings B rockets have shorter wings
+
+\vspace{1em}
+
+> Smaller triangles are B unless it also has a large circle/oval
+
+\vspace{1em}
+
+> Type A rockets tend to be shorter and sleeker, while Type B rockets tend to be bulkier.
+
+\vspace{1em}
+
+> Type A rockets are generally more balanced in appearance. Type B have unequal proportions.
+
+# Rockets: A hero!
+
+\scriptsize
+
+> Check the circles between both rockets. Also see the base.
+
+\vspace{1em}
+
+> Check the ovals and the base Type A has both with a small circle and base or a large circle and base. Type B has a mix of small circle or base with a large circle or base
+
+```{r rockets-correct, out.height="60%"}
+accuracy_plot %+% filter(Rockets, workerId == "AHKRGPN5D3I2G")
+```
+
+# Person who inherited?
+
+\scriptsize
+
+> The type A has a circle that is similar to B, but it’s different. You can also clearly tell the difference in the fins.
+
+\vspace{1em}
+
+> The A is distinct from the B in the design of the wings and rocket nozzle.
+
+```{r rockets-inherited, out.height="60%"}
+accuracy_plot %+% filter(Rockets, workerId %in% c("A25R2OI9L2Q1OW", "AHKRGPN5D3I2G"))
 ```
