@@ -1,3 +1,6 @@
+*_cache/
+*_files/
+*.pdf
 .Rproj.user
 .Rhistory
 .RData

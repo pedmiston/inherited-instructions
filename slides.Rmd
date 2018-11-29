@@ -9,9 +9,166 @@ output:
     includes:
       in_header: header.tex
 ---
+```{r config, include=FALSE}
+library(knitr)
+library(crotchet)
+library(gridExtra)
+opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE)
+sapply(list.files("R", "*.R", full.names = TRUE), read_chunk)
+```
+```{r theme, include=FALSE, cache=FALSE}
+library(ggplot2)
+theme_set(theme_minimal(base_size=16))
+```
 
 # Totems
 
+```{r totems, include=FALSE}
+```
+
+```{r totems-game}
+draw_image("derex-boyd-2015-fig2", package = "totems")
+```
+
+# Totems: Landscape
+
+```{r totems-landscape-and-recipes}
+grid.arrange(
+  read_image("landscape-sample.gv", package = "totems"),
+  read_image("recipes.gv", package = "totems"),
+  nrow = 1,
+  widths = c(0.6, 0.4)
+)
+```
+
+# Totems: Tools
+
+```{r totems-landscape-tools, out.height="85%"}
+draw_image("landscape-tools.gv", package = "totems")
+```
+
+# Totems: Explanations
+
+> Make sure that you use the rock as much as possible because it yields the most results. Strategies that worked was when creating a new tool, test that new tool with every other tool or resource because that often created something new. In the end I spent a lot of time trying to create a stump because that is how you build the totem so use the tools and work with the different trees to try and build the stumps. The most confusing part was initially starting and trying to decide what to test first so don’t hesitate, just simply go for it.
+
+# Totems: Explanations
+
+> I would tell them to think carefully about the materials and re-read the directions. I would tell them to try different combinations with the sturdy materials and try to make new things out of the trees as well. I found that guessing with the berries did not work and filling out all four spaces also did not work. I found it difficult/ confusing on how to actually build the pole and what to do once I ended up with certain resources.
+
+# Totems: Explanations
+
+> To begin with, use your rocks. Rocks with rocks, rocks with those advanced rocks, advanced rocks with more advanced items and you’ll get a lot of combinations. The berries, not much help. Use your rocks the most. It helps if you make doubles of items and then try combining those to make more new items. Find a pattern and stick to it.
+
+# Totems: Explanations
+
+> \scriptsize The last item I discovered was the string, I am guessing that some combination of the string with either the wood poles or the block of larger wood will give you a block. A combination of the string with one of the types of arrowhead may give you a new tool but I doubt it as I think I tried most of them. Also I think the berries are used much later in the game as an item you can use to dye the blocks of wood to make more points from the totem pole. One last piece of advice would be to try multiple of a material to see if something is produced. An example would be to try two or three arrowheads together by them self and then adding another material or tool. When you go through a cold patch where you are not making any progress take stop clicking, take your hand off the mouse and take a deep breath. Then try to think of what real life combinations would yield objects you could use.
+
+# Totems: Explanations
+
+> Use common sense to think of combinations, but also throw things together you might not think work. I didn’t expect some of the stuff to work and it did.
+
+# Totems: Explanations
+
+> You got to keep making combos until something works. Make them big because I tried all the all the 1 by 1’s. The game is a spoof, so don’t get mad or frustrated. Try and do like 3 different items in the box because I couldn’t get through all those combos.
+
+# Totems: Number of innovations
+
+```{r totems-num-innovations}
+num_innovations_plot
+```
+
+# Totems: Rate of innovation
+
+```{r totems-rate-of-innovation}
+rate_of_innovation_plot
+```
+
+# Totems: Summary
+
+- Participants were able to generate useful instructions.
+- Instructions were useful in different ways that are hard to quantify.
+- No clear benefit to inheriting instructions **over and above** inheriting tools.
+
 # Gems
 
+```{r gems, include=FALSE}
+```
+
+```{r gems-solution-space}
+gridExtra::grid.arrange(
+  read_image("SimpleHillGems", package = "gems"),
+  simple_hill_landscape,
+  nrow = 1,
+  widths = c(0.4, 0.6)
+)
+```
+
+# Gems: Procedure
+
+```{r gems-procedure}
+grid.arrange(
+  read_image("inherited-instructions-trial", package = "gems"),
+  trial_plot,
+  nrow = 1
+)
+```
+
+# Gems: Overall performance
+
+```{r gems-overall}
+score_by_block_plot
+```
+
+# Gems: Instructions
+
+```{r gems-instructions-coded}
+grid.arrange(
+  instructions_coded_plot,
+  instructions_summarized_plot,
+  nrow = 1
+)
+```
+
+# Gems: Instructions outcomes
+
+```{r gems-instructions-outcomes}
+grid.arrange(
+  instruction_quality_and_performance_plot,
+  instruction_quality_and_final_performance_plot,
+  nrow = 1,
+  widths = c(0.6, 0.4)
+)
+```
+
+# Gems: Gen2 versus Gen1
+
+```{r gems-block1-by-instructions-type}
+instructions_versus_no_instructions_plot
+```
+
+# Gems: Gen2 - Gen1
+
+```{r gems-diff}
+diff_plot
+```
+
+# Gems: Gen2 - Gen1
+
+```{r gems-overall-diff}
+overall_diff_plot
+```
+
 # Rockets
+
+```{r rockets, include=FALSE}
+```
+
+```{r rockets-categories}
+draw_image("rocket-categories", package = "rockets")
+```
+
+# Rockets: Performance
+
+```{r rockets-performance}
+accuracy_plot
+```
